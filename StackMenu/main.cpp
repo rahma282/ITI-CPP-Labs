@@ -31,7 +31,7 @@ public:
         employees= new Employee[size];
         count++;  //increment object counter
     }
-    // check if the employee ID is numeric and contains no characters
+    // check if the employee id is numeric and contains no characters
     bool isValidID(const string& idStr)
     {
         for (char c : idStr)
@@ -67,7 +67,7 @@ public:
         return true;
     }
 
-    // check if the salary is valid (positive number and numeric)
+    // check if the salary is positive number and numeric
     bool isValidSalary(const string& salaryStr)
     {
         for (char c : salaryStr)
