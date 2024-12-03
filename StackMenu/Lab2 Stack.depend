@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1733251376 source:c:\users\admin\documents\c++labs\iti-cpp-labs\lab2 stackmenu\main.cpp
+	<iostream>
+	<conio.h>
+	<windows.h>
+	<filesystem>
+
