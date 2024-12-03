@@ -92,7 +92,7 @@ int main() {
     Complex c4(0, 0);
     c4.setComplex(7, -2);
     cout << "Using setComplex Function): "<<endl;
-    c4.display();  // Displays: 7 -2i
+    c4.display();
 
     return 0;
 }

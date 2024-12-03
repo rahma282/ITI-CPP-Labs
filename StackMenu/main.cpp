@@ -8,7 +8,6 @@
 #define BACKSPACE 8
 #define BLUE 1
 #define WHITE 7
-void SetColor(int ForgC);
 using namespace std;
 
 class Stack
@@ -18,7 +17,7 @@ private:
     {
         int id;
         string name;
-        double salary;
+        int salary;
     };
     int top;
     int size;
@@ -32,6 +31,52 @@ public:
         employees= new Employee[size];
         count++;  //increment object counter
     }
+    // check if the employee ID is numeric and contains no characters
+    bool isValidID(const string& idStr)
+    {
+        for (char c : idStr)
+        {
+            if (!isdigit(c))
+                return false;
+        }
+        return true;
+    }
+
+    bool isUniqueID(int id)
+    {
+        for (int i = 0; i <= top; i++)
+        {
+            if (employees[i].id == id)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // check if the employee name is alphabetic and not empty
+    bool isValidName(const string& name)
+    {
+        if (name.empty())
+            return false;
+        for (char c : name)
+        {
+            if (!isalpha(c) && c != ' ')
+                return false;
+        }
+        return true;
+    }
+
+    // check if the salary is valid (positive number and numeric)
+    bool isValidSalary(const string& salaryStr)
+    {
+        for (char c : salaryStr)
+        {
+            if (!isdigit(c))
+                return false;
+        }
+        return true;
+    }
     int push ()
     {
 
@@ -40,22 +85,46 @@ public:
             return 0;
         }
         Employee newEmployee;
+        string input;
 
         cout << "Enter Employee ID: ";
-        cin >> newEmployee.id;
+        cin >> input;
+        while (!isValidID(input) || !isUniqueID(stoi(input)))
+        {
+            if (!isValidID(input))
+            {
+                cout << "Invalid ID!, ID must be numeric .. Enter again: ";
+            }
+            else
+            {
+                cout << "ID already exists! .. Enter a unique ID: ";
+            }
+            cin >> input;
+        }
+        newEmployee.id = stoi(input); //convert string to int
 
         cout << "Enter Employee Name: ";
-        cin.ignore(); // To clear the newline character from the input buffer
-        getline(cin, newEmployee.name);
+        cin.ignore();  // to clear the newline character left by previous input
+        getline(cin, newEmployee.name); //to read the full line with spaces
+        while (!isValidName(newEmployee.name))
+        {
+            cout << "Invalid Name!, Name must contain only alphabetic characters .. Enter again: ";
+            getline(cin, newEmployee.name);
+        }
 
         cout << "Enter Employee Salary: ";
-        cin >> newEmployee.salary;
+        cin >> input;
+        while (!isValidSalary(input))
+        {
+            cout << "Invalid Salary!, Salary must be numeric and a positive number .. Enter again: ";
+            cin >> input;
+        }
+        newEmployee.salary = stoi(input);  // convert string to int
 
         // add the employee to stack
-
         top++;
         employees[top] = newEmployee;
-        cout << "Employee added successfully!" << endl;
+        cout << "Employee added successfully" << endl;
 
         return 1;
 
@@ -79,12 +148,29 @@ public:
             cout<<"Stack is empty"<<endl;
             return;
         }
-        cout << endl<<"---- Employee Stack ----"<<endl;
+        cout <<"---- Employee Stack ----"<<endl;
         for(int i=dis; i>=0; i--)
         {
             cout << "ID: " << employees[i].id<< ", Name: " << employees[i].name<< ", Salary: " << employees[i].salary << endl;
         }
     }
+
+    void SetColor(int ForgC)
+    {
+        WORD wColor;
+
+        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+        // We use csbi for the wAttributes word.
+        if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
+        {
+            // Mask out all but the background attribute, and add in the foreground color
+            wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+            SetConsoleTextAttribute(hStdOut, wColor);
+        }
+    }
+
 
     void displayMenu()
     {
@@ -92,7 +178,7 @@ public:
         int selected = 0;
         const char* menu[] = { "Push", "Pop", "Display", "Exit" };
 
-         while (true)
+        while (true)
         {
             system("cls");
             for (int i = 0; i < menuSize; i++)
@@ -111,7 +197,8 @@ public:
 
             // Wait for input
             char ch_in = getch();
-            if (ch_in == -32) {
+            if (ch_in == -32)
+            {
                 ch_in = getch();
                 switch (ch_in)
                 {
@@ -134,39 +221,40 @@ public:
                     {
                         system("cls");
                         SetColor(WHITE);
-                        while (true)    // Use `true` for infinite loop (more readable)
+                        while (true)
                         {
                             cout << "Do you want to add another employee? [y/n]: " << endl;
                             ch_in = getch();
                             if (ch_in == 'y' || ch_in == 'Y')
                             {
-                                if (!push()) {
-                                    cout<<"Stack is full ..Can't add"<<endl;
-                                    break;  // exit if the stack is full
+                                if (!push())
+                                {
+                                    cout<<"Stack is full.."<<endl;
+                                    break;
                                 }
                             }
                             else if (ch_in == 'n' || ch_in == 'N')
                             {
-                                break;  // This break is correctly exiting the while loop
+                                break;
                             }
                         }
                     }
-                    break;  // This break is correctly breaking out of the case 0
+                    break;
 
                 case 1: // pop
-                    {
+                {
                     system("cls");
                     SetColor(WHITE);
                     Employee emp;
-                        if (pop(emp))
-                        {
-                            cout << "Employee popped successfully!" << endl;
-                            cout << "Employee ID: " << emp.id << ", Name: " << emp.name << ", Salary: " << emp.salary << endl;
-                        }
-                        else
-                            cout << "Failed to pop employee..Stack is empty" << endl;
-                    break;
+                    if (pop(emp))
+                    {
+                        cout << "Employee popped successfully" << endl;
+                        cout << "Employee ID: " << emp.id << ", Name: " << emp.name << ", Salary: " << emp.salary << endl;
                     }
+                    else
+                        cout << "Failed to pop employee..Stack is empty" << endl;
+                    break;
+                }
                 case 2:  //display
                     system("cls");
                     SetColor(WHITE);
@@ -183,14 +271,14 @@ public:
                         cout << "Exiting program...\n";
                         return;
                     }
-                     else if (ch_in == 'n' || ch_in == 'N')
+                    else if (ch_in == 'n' || ch_in == 'N')
                     {
                         system("cls");
                     }
                     break;
                 }
 
-                getch(); // Wait for key press
+                getch();
 
             }
         }
@@ -207,7 +295,7 @@ public:
     }
 };
 
-// Define static variable count
+// static variable count
 int Stack::count = 0;
 
 int main()
@@ -215,24 +303,8 @@ int main()
     Stack stack(5);
     stack.displayMenu();
     cout << endl;
-    // Check the number of stack objects
+
     cout << "Number of active Stack objects: " << Stack::getCount() << endl;
     return 0;
-}
-
-void SetColor(int ForgC)
-{
-    WORD wColor;
-
-    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-
-    // We use csbi for the wAttributes word.
-    if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
-    {
-        // Mask out all but the background attribute, and add in the foreground color
-        wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
-        SetConsoleTextAttribute(hStdOut, wColor);
-    }
 }
 
