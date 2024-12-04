@@ -34,9 +34,10 @@ public:
     // check if the employee id is numeric and contains no characters
     bool isValidID(const string& idStr)
     {
-        for (char c : idStr)
+        for (int i = 0; i < idStr.length(); ++i)
         {
-            if (!isdigit(c))
+            char c = idStr[i];
+            if (c < '0' || c > '9')
                 return false;
         }
         return true;
@@ -59,9 +60,10 @@ public:
     {
         if (name.empty())
             return false;
-        for (char c : name)
+        for (int i = 0; i < name.length(); ++i)
         {
-            if (!isalpha(c) && c != ' ')
+            char c = name[i];
+            if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' '))
                 return false;
         }
         return true;
@@ -70,9 +72,10 @@ public:
     // check if the salary is positive number and numeric
     bool isValidSalary(const string& salaryStr)
     {
-        for (char c : salaryStr)
+        for (int i = 0; i < salaryStr.length(); ++i)
         {
-            if (!isdigit(c))
+            char c = salaryStr[i];
+            if (c < '0' || c > '9')
                 return false;
         }
         return true;
@@ -216,20 +219,20 @@ public:
 
                 switch (selected)
                 {
-                case 0:  // push
+                case 0:  // Push
                     if (push())
                     {
-                        system("cls");
                         SetColor(WHITE);
                         while (true)
                         {
                             cout << "Do you want to add another employee? [y/n]: " << endl;
                             ch_in = getch();
+
                             if (ch_in == 'y' || ch_in == 'Y')
                             {
                                 if (!push())
                                 {
-                                    cout<<"Stack is full.."<<endl;
+                                    cout << "Stack is full.." << endl;
                                     break;
                                 }
                             }
@@ -237,14 +240,17 @@ public:
                             {
                                 break;
                             }
+                            else if (ch_in == BACKSPACE)
+                            {
+                                cout << endl << "...Back to the menu..." << endl;
+                                break;
+                            }
                         }
                     }
                     break;
 
-                case 1: // pop
+                case 1:  // Pop
                 {
-                    system("cls");
-                    SetColor(WHITE);
                     Employee emp;
                     if (pop(emp))
                     {
@@ -252,16 +258,31 @@ public:
                         cout << "Employee ID: " << emp.id << ", Name: " << emp.name << ", Salary: " << emp.salary << endl;
                     }
                     else
+                    {
                         cout << "Failed to pop employee..Stack is empty" << endl;
-                    break;
+                    }
+                    cout << "Press BACKSPACE to return to the menu." << endl;
+                    ch_in = getch();
+                    if (ch_in == BACKSPACE)
+                    {
+                        cout << endl << "...Back to the menu..." << endl;
+                    }
                 }
-                case 2:  //display
+                break;
+
+                case 2:  // Display
                     system("cls");
                     SetColor(WHITE);
                     display();
+                    cout << "Press BACKSPACE to return to the menu." << endl;
+                    ch_in = getch();
+                    if (ch_in == BACKSPACE)
+                    {
+                        cout << endl << "...Back to the menu..." << endl;
+                    }
                     break;
 
-                case 3:  // exit
+                case 3:  // Exit
                     system("cls");
                     SetColor(WHITE);
                     cout << "Do you want to exit? [y/n]: ";
@@ -269,18 +290,16 @@ public:
                     if (ch_in == 'y' || ch_in == 'Y')
                     {
                         cout << "Exiting program...\n";
-                        return;
+                        return; // Exiting the program
                     }
                     else if (ch_in == 'n' || ch_in == 'N')
                     {
-                        system("cls");
+                        system("cls"); // Return to the menu
                     }
                     break;
                 }
-
-                getch();
-
             }
+
         }
     }
 
