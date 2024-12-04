@@ -1,10 +1,6 @@
 #include <iostream>
 
 using namespace std;
-
-int main()#include <iostream>
-
-using namespace std;
 class Stack {
 private:
     int top;
@@ -83,6 +79,3 @@ int main()
     return 0;
 }
 
-    cout << "Hello world!" << endl;
-    return 0;
-}
