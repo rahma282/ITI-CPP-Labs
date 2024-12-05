@@ -18,12 +18,12 @@ public:
     }
      // Copy Constructor
 //    Stack( Stack& s) {
-//        // create a deep copy of the s stack
+//         create a deep copy of the s stack
 //        this->size = s.size;
 //        this->top = s.top;
 //        this->items = new int[this->size];
 //
-//        // copy all elements from the s stack
+//         copy all elements from the s stack  deep copy
 //        for (int i = 0; i <= s.top; i++) {
 //            this->items[i] = s.items[i];
 //        }
