@@ -11,6 +11,10 @@ public:
         real = i;
         img = j;
     }
+    Complex(){
+
+    }
+
     void setReal(int realData){
         if (real >0){
            real = realData;
@@ -50,14 +54,20 @@ public:
             }
         }
     }
+    void setComplex(int real, int img){
+    this->real = real;
+    this->img = img;
+    }
     Complex add(Complex c){
         return Complex(real + c.real, img + c.img);
     }
     Complex sub(Complex c){
          return Complex(real - c.real, img - c.img);
     }
+
     ~Complex(){ //destructor
-      cout<<"destructor"<<endl;
+      cout<<"object destroyed"<<endl;
+      cout<<"------------------"<<endl;
     }
 
 };
@@ -78,6 +88,11 @@ int main() {
     Complex difference = c1.sub(c2);
     cout << "Difference: ";
     difference.display();
+
+    Complex c4(0, 0);
+    c4.setComplex(7, -2);
+    cout << "Using setComplex Function): "<<endl;
+    c4.display();
 
     return 0;
 }
