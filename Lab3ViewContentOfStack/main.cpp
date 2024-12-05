@@ -61,19 +61,20 @@ public:
 
     }
     Stack& operator=(Stack &s) {
-    if (this == &s) return *this;  // self-assignment check
+    if (this == &s)
+    return *this;
 
-    delete[] this->items;  // Clean up old memory
+    delete[] this->items;
     this->size = s.size;
     this->top = s.top;
     this->items = new int[this->size];
 
-    // Copy all elements from the stack (deep copy)
+    // copy all elements from the stack (deep copy)
     for (int i = 0; i <= s.top; i++) {
         this->items[i] = s.items[i];
     }
 
-    cout << "Assignment operator called. Object count: " << count << endl;
+    cout << "Assignment operator called"<<"--------"<<" Object count: " << count << endl;
     return *this;
 }
 
