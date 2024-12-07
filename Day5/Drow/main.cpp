@@ -1,7 +1,6 @@
 #include <iostream>
 #include <graphics.h>
 using namespace std;
-
 class Point
 {
 private:
@@ -20,50 +19,71 @@ public:
     }
 };
 
-class Line
+class Shape
+{
+private:
+    int color;
+protected:
+public:
+    Shape(int color)
+    {
+        this-> color=color;
+    }
+    void setColor(int color)
+    {
+        this-> color=color;
+    }
+    int getColor()
+    {
+        return this-> color;
+    }
+    ~Shape()
+    {
+
+    }
+};
+
+class Line :Shape
 {
 private:
     Point start;
     Point end;
 public:
-    Line() : start(), end() {}
-    Line(int x1, int y1, int x2, int y2) : start(x1, y1), end(x2, y2) {}
-
+    Line() :Shape(0), start(), end() {}
+    Line(int x1, int y1, int x2, int y2,int color) :Shape(color), start(x1, y1), end(x2, y2) {}
     void draw()
     {
-        // Placeholder for drawing a line
-        Line(start.getX(), start.getY(), end.getX(), end.getY());
+        setcolor(this->getColor());
+        line(start.getX(), start.getY(), end.getX(), end.getY());
     }
 };
 
-class Rect
+class Rect :Shape
 {
 private:
-    Point ul; // Upper-left point
-    Point lr; // Lower-right point
+    Point ul;
+    Point lr;
 public:
-    Rect() : ul(), lr() {}
-    Rect(int x1, int y1, int x2, int y2) : ul(x1, y1), lr(x2, y2) {}
-
+    Rect() : Shape(0),ul(), lr() {}
+    Rect(int x1, int y1, int x2, int y2,int color) :Shape(color), ul(x1, y1), lr(x2, y2) {}
     void draw()
     {
-        // Placeholder for drawing a rectangle
+        setcolor(this->getColor());
         rectangle(ul.getX(), ul.getY(), lr.getX(), lr.getY());
     }
 };
-
-class Circle
+class Circle :Shape
 {
 private:
     Point center;
     int radius;
 public:
-    Circle() : center(), radius(0) {}
-    Circle(int m, int n, int r) : center(m, n), radius(r) {}
-
+    Circle() :Shape(0), center(), radius(0) {}
+    Circle(int m, int n, int r,int color) :Shape(color), center(m, n), radius(r) {}
     void draw()
     {
-        // Placeholder for drawing a circle
+
+        setcolor(this->getColor());
         circle(center.getX(), center.getY(), radius);
     }
 };
@@ -75,28 +95,23 @@ private:
     Circle* pCircles;
     Rect* pRects;
     Line* pLines;
-
 public:
     Picture() : cNum(0), rNum(0), lNum(0), pCircles(nullptr), pRects(nullptr), pLines(nullptr) {}
-
     void setCircles(int cn, Circle* pC)
     {
         cNum = cn;
         pCircles = pC;
     }
-
     void setRects(int rn, Rect* pR)
     {
         rNum = rn;
         pRects = pR;
     }
-
     void setLines(int ln, Line* pL)
     {
         lNum = ln;
         pLines = pL;
     }
-
     void paint()
     {
         for (int i = 0; i < cNum; i++)
@@ -113,41 +128,19 @@ public:
         }
     }
 };
-
-// Example placeholder drawing functions
-/*void line(int x1, int y1, int x2, int y2) {
-    cout << "Drawing line from (" << x1 << "," << y1 << ") to (" << x2 << "," << y2 << ")" << endl;
-}
-
-void rectangle(int x1, int y1, int x2, int y2) {
-    cout << "Drawing rectangle from (" << x1 << "," << y1 << ") to (" << x2 << "," << y2 << ")" << endl;
-}
-
-void circle(int x, int y, int radius) {
-    cout << "Drawing circle at (" << x << "," << y << ") with radius " << radius << endl;
-}*/
-
 int main()
 {
     int gd = DETECT, gm;
     initgraph(&gd, &gm, "");
-
     // Graphic Mode
     Picture myPic;
-
-    Circle cArr[3] = { Circle(50, 50, 50), Circle(200, 100, 100), Circle(420, 50, 30) };
-    Rect rArr[2] = { Rect(30, 40, 170, 100), Rect(420, 50, 500, 300) };
-    Line lArr[2] = { Line(420, 50, 300, 300), Line(40, 500, 500, 400) };
-
+    Circle cArr[3] = { Circle(50, 50, 50,RED), Circle(200, 100, 100,RED), Circle(420, 50, 30,RED) };
+    Rect rArr[2] = { Rect(30, 40, 170, 100,GREEN), Rect(420, 50, 500, 300,GREEN) };
+    Line lArr[2] = { Line(420, 50, 300, 300,BLUE), Line(40, 500, 500, 400,BLUE) };
     myPic.setCircles(3, cArr);
     myPic.setRects(2, rArr);
     myPic.setLines(2, lArr);
-
     myPic.paint();
-
     getch();
-    getch();
-
     return 0;
 }
-
