@@ -73,13 +73,13 @@ public:
         cout << "SecondDrived Parametrized Constructor called .." << endl;
     }
 
-    // Override `sub()` - change behavior
-    int sub() {
+
+    int sub() { // override --> change behavior
         return a - b - n - i;
     }
 
-    // Override `sub()` - extend behavior
-    int subBase() {
+
+    int subBase() {  // override --> extend behavior
         return Drived::sub() - i;
     }
 
